@@ -58,20 +58,15 @@ h1:focus {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
-/* 1. Define global theme variables */
 html, :root {
     --bg-primary: #ffffff;
     --text-primary: #212529;
 }
-
-    /* 2. Update variables when dark mode is toggled */
     .theme-dark,
     html:has(.theme-dark) {
         --bg-primary: #121212 !important;
         --text-primary: #e0e0e0 !important;
     }
-
-        /* 3. Force override the default Blazor template layout styles */
         .theme-dark main,
         .theme-dark .content,
         .theme-dark article,
@@ -79,15 +74,11 @@ html, :root {
             background-color: var(--bg-primary) !important;
             color: var(--text-primary) !important;
         }
-
-        /* 4. Make sure the top row matches dark mode seamlessly */
         .theme-dark .top-row {
             background-color: #1e1e1e !important;
             border-bottom: 1px solid #333333 !important;
             color: #ffffff !important;
         }
-
-        /* 5. Keep standard text readable */
         .theme-dark h1,
         .theme-dark h2,
         .theme-dark h3,
