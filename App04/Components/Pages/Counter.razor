@@ -1,19 +1,109 @@
 ﻿@page "/counter"
 @rendermode InteractiveServer
 
-<PageTitle>Counter</PageTitle>
+<div class="container-fluid min-vh-100 d-flex align-items-center 
+justify-content-center bg-light-blue-gradient py-5">
+    <div class="card shadow-lg border-0 overflow-hidden" 
+    style="width: 100%; max-width: 450px; border-radius: 20px;">
 
-<h1>Counter</h1>
+        <div class="bg-gradient-indigo text-white text-center py-4 px-3">
+            <div class="icon-wrapper mb-2">
+                <i class="bi bi-plus-square fs-2"></i>
+            </div>
+            <h4 class="m-0 fw-bold tracking-wide">Interactive Click Engine</h4>
+            <p class="text-white-50 small m-0 mt-1">Demonstrating Events and Data Binding</p>
+        </div>
 
-<p role="status">Current count: @currentCount</p>
+        <div class="card-body p-4 p-md-5 bg-white text-center">
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+            <span class="text-muted text-uppercase fw-bold tracking-wider
+            small d-block mb-2">Current Total Count</span>
+
+            <div class="display-1 fw-bold text-primary mb-4 animate-scale">
+                @clickCount
+            </div>
+
+            <button class="btn btn-primary btn-lg w-100 fw-bold py-3 shadow-sm mb-4"
+                    @onclick="IncrementCount" style="border-radius: 12px;">
+                <i class="bi bi-hand-index-thumb-fill me-2"></i>Increment Counter
+            </button>
+
+            <div class="border-top pt-4 bg-light p-3 rounded-3" style="border-style: 
+             dashed !important; border-color: #dee2e6 !important;">
+                <label class="form-label fw-bold text-secondary small text-uppercase 
+                d-block mb-2">Manual Count Override</label>
+                <div class="input-group shadow-sm rounded-3 overflow-hidden" 
+                style="max-width: 250px; margin: 0 auto;">
+                    <span class="input-group-text bg-white border-end-0 text-muted">
+                        <i class="bi bi-sliders"></i></span>
+                    <input type="text" class="form-control border-start-0 bg-white text-center fw-bold fs-5"
+                           @bind="ManualCountValue" placeholder="Type integer..." />
+                </div>
+                <small class="text-muted d-block mt-2">Type a whole number and press 
+                    <strong>Enter</strong></small>
+            </div>
+
+        </div>
+
+        <div class="card-footer bg-light text-center py-3 border-0">
+            <span class="text-muted small fw-medium">CS-284L • Visual Programming Lab</span>
+        </div>
+    </div>
+</div>
 
 @code {
-    private int currentCount = 0;
+    private int clickCount = 0;
 
+    // Event handler to increment the variable counter safely
     private void IncrementCount()
     {
-        currentCount++;
+        clickCount = clickCount + 1;
+    }
+
+    // Two-way binding bridge tracking text updates and converting cleanly with int.Parse
+    private string ManualCountValue
+    {
+        get => clickCount.ToString();
+        set
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                clickCount = int.Parse(value);
+            }
+        }
     }
 }
+
+<style>
+    .bg-light-blue-gradient {
+        background: linear-gradient(135deg, #f1f4f9 0%, #d5dde9 100%);
+    }
+
+    .bg-gradient-indigo {
+        background: linear-gradient(135deg, #3f51b5 0%, #5c6bc0 100%);
+    }
+
+    .icon-wrapper {
+        display: inline-flex;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.15);
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .input-group .form-control:focus {
+        background-color: #ffffff !important;
+        box-shadow: none;
+        border-color: #3f51b5;
+    }
+
+    .tracking-wide {
+        letter-spacing: 0.05rem;
+    }
+
+    .tracking-wider {
+        letter-spacing: 0.08rem;
+    }
+</style>
