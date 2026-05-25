@@ -1,0 +1,132 @@
+﻿@page "/greeting"
+@rendermode InteractiveServer
+
+<div class="container-fluid min-vh-100 d-flex align-items-center 
+justify-content-center bg-light-purple-gradient py-5">
+    <div class="card shadow-lg border-0 overflow-hidden" 
+    style="width: 100%; max-width: 480px; border-radius: 20px;">
+
+        <div class="bg-gradient-primary text-white text-center py-4 px-3 position-relative">
+            <div class="icon-badge-wrapper mb-2">
+                <i class="bi bi-person-badge fs-2"></i>
+            </div>
+            <h4 class="m-0 fw-bold tracking-wide">Identity Portal</h4>
+            <p class="text-white-50 small m-0 mt-1">Blazor Advanced Data Binding System</p>
+        </div>
+
+        <div class="card-body p-4 p-md-5 bg-white">
+            <div class="mb-4">
+                <label class="form-label fw-bold text-uppercase text-muted
+                 small tracking-wider mb-2">Enter Your Name</label>
+                <div class="input-group input-group-custom shadow-sm rounded-3 overflow-hidden">
+                    <span class="input-group-text bg-light border-end-0 text-muted px-3">
+                        <i class="bi bi-keyboard"></i>
+                    </span>
+                    <input type="text" class="form-control form-control-lg border-start-0 bg-light ps-2"
+                           @bind="userName" placeholder="Type name and press Enter..." />
+                </div>
+            </div>
+
+            <div class="greeting-display-area">
+                @if (!string.IsNullOrEmpty(userName))
+                {
+                    <div class="alert alert-custom-success d-flex align-items-center
+                     p-3 rounded-3 shadow-xs animate-slide-up" role="alert">
+                        <div class="alert-icon-circle bg-success text-white me-3 d-flex
+                        align-items-center justify-content-center rounded-circle">
+                            <i class="bi bi-check-lg"></i>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block text-uppercase fw-bold 
+                             tracking-widest-xs">System Greeting</small>
+                            <span class="fw-bold fs-5 text-dark">@(greetingPrefix + userName + "!")</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-custom-info d-flex align-items-center p-3 
+                     rounded-3 text-muted bg-light border-0 small">
+                        <i class="bi bi-info-circle-fill text-primary me-2 fs-5"></i>
+                        <span>Type your full name above and press <strong>Enter</strong>
+                              to generate greeting.</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card-footer bg-light text-center py-3 border-0">
+            <span class="text-muted small fw-medium">CS-284L • Visual Programming Lab</span>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string userName = "";
+    private string greetingPrefix = "Hello, ";
+}
+
+<style>
+    /* Premium UI Stylesheets Overrides directly targeting the layout components design */
+    .bg-light-purple-gradient {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f3 100%);
+    }
+
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    }
+
+    .icon-badge-wrapper {
+        display: inline-flex;
+        width: 55px;
+        height: 55px;
+        background: rgba(255, 255, 255, 0.15);
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        backdrop-filter: blur(4px);
+    }
+
+    .input-group-custom .form-control:focus {
+        background-color: #ffffff !important;
+        box-shadow: none;
+    }
+
+    .alert-custom-success {
+        background-color: #f0fdf4;
+        border-left: 5px solid #16a34a;
+    }
+
+    .alert-icon-circle {
+        width: 35px;
+        height: 35px;
+        min-width: 35px;
+        font-size: 1.1rem;
+    }
+
+    .tracking-wider {
+        letter-spacing: 0.05rem;
+    }
+
+    .tracking-widest-xs {
+        letter-spacing: 0.08rem;
+        font-size: 0.65rem;
+    }
+
+    /* Modern Fluid Appearance Animation Keyframes rules */
+    .animate-slide-up {
+        animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
