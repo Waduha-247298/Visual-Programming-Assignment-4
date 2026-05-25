@@ -3,6 +3,7 @@ using App05.Components;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<App05.Services.AuthenticationStateService>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
