@@ -1,0 +1,144 @@
+﻿@page "/todo"
+@rendermode InteractiveServer
+
+<div class="container-fluid min-vh-100 d-flex align-items-center
+justify-content-center bg-light-green-gradient py-5">
+    <div class="card shadow-lg border-0 overflow-hidden" 
+    style="width: 100%; max-width: 500px; border-radius: 20px;">
+
+        <div class="bg-gradient-success text-white text-center py-4 px-3">
+            <div class="icon-wrapper mb-2">
+                <i class="bi bi-list-check fs-2"></i>
+            </div>
+            <h4 class="m-0 fw-bold tracking-wide">Personal Task Planner</h4>
+            <p class="text-white-50 small m-0 mt-1">Manage your daily objectives dynamically</p>
+        </div>
+
+        <div class="card-body p-4 p-md-5 bg-white">
+
+            <div class="mb-4">
+                <label class="form-label fw-bold text-secondary small text-uppercase">
+                    New Task Description</label>
+                <div class="input-group shadow-sm rounded-3 overflow-hidden">
+                    <span class="input-group-text bg-light border-end-0 text-muted px-3">
+                        <i class="bi bi-plus-circle"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0 bg-light ps-2"
+                           @bind="newTask" placeholder="Enter a new task..." />
+                    <button class="btn btn-success px-4 fw-bold" @onclick="AddTask">Add Task</button>
+                </div>
+            </div>
+
+            <div class="task-container">
+                <label class="form-label fw-bold text-secondary small text-uppercase mb-2">Current Tasks</label>
+
+                <ul class="list-group list-group-flush border rounded-3 overflow-hidden shadow-sm mb-4">
+                    @if (tasks.Count == 0)
+                    {
+                        <li class="list-group-item text-center text-muted py-4 bg-light">
+                            <i class="bi bi-inbox text-secondary d-block fs-3 mb-2"></i>
+                            <span class="small">No tasks active. Add a task above to get started!</span>
+                        </li>
+                    }
+                    else
+                    {
+                        @foreach (var task in tasks)
+                        {
+                            <li class="list-group-item d-flex align-items-center py-3 animate-slide-up">
+                                <div class="icon-circle bg-light-success text-success 
+                                   me-3 rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-check2"></i>
+                                </div>
+                                <span class="fw-medium text-dark">@task</span>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+
+            @if (tasks.Count > 0)
+            {
+                <button class="btn btn-outline-danger w-100 fw-bold py-2 shadow-sm border-2"
+                        @onclick="ClearAllTasks" style="border-radius: 10px;">
+                    <i class="bi bi-trash3-fill me-2"></i>Clear All Tasks
+                </button>
+            }
+        </div>
+
+        <div class="card-footer bg-light text-center py-3 border-0">
+            <span class="text-muted small fw-medium">CS-284L • Visual Programming Lab</span>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<string> tasks = new List<string>();
+    private string newTask = "";
+
+    private void AddTask()
+    {
+        if (!string.IsNullOrWhiteSpace(newTask))
+        {
+            tasks.Add(newTask);
+            newTask = ""; 
+        }
+    }
+
+    private void ClearAllTasks()
+    {
+        tasks.Clear(); 
+    }
+}
+
+<style>
+    .bg-light-green-gradient {
+        background: linear-gradient(135deg, #f4f7f6 0%, #e1eade 100%);
+    }
+
+    .bg-gradient-success {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+
+    .icon-wrapper {
+        display: inline-flex;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.15);
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .input-group .form-control:focus {
+        background-color: #ffffff !important;
+        box-shadow: none;
+        border-color: #11998e;
+    }
+
+    .icon-circle {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        background-color: #e8fafd;
+    }
+
+    .tracking-wide {
+        letter-spacing: 0.05rem;
+    }
+
+    .animate-slide-up {
+        animation: todoSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @@keyframes todoSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
