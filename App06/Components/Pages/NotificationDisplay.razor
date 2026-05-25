@@ -1,0 +1,103 @@
+﻿@page "/notif-display"
+@rendermode InteractiveServer
+@implements IDisposable
+@inject App06.Services.NotificationService NotifService
+@inject App06.Models.NotificationConfig Config
+
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light-orange-gradient py-5">
+    <div class="card shadow-lg border-0 overflow-hidden" style="width: 100%; max-width: 500px; border-radius: 20px;">
+
+        <div class="card-body p-4 bg-white">
+            <div class="d-flex align-items-center justify-content-between border-bottom pb-3 mb-3">
+                <h5 class="fw-bold m-0 text-dark"><i class="bi bi-bell-fill text-warning me-2"></i>Live System Feed</h5>
+                <span class="badge @(currentStyle == "Detailed" ? "bg-primary" : "bg-secondary") rounded-pill px-3 py-2">
+                    @currentStyle Mode
+                </span>
+            </div>
+
+            <div class="notifications-container">
+                @if (notificationList == null)
+                {
+                    <div class="text-center py-4 text-muted small"><div class="spinner-border spinner-border-sm me-2"></div>Loading...</div>
+                }
+                else if (notificationList.Count == 0)
+                {
+                    <div class="text-center py-4 bg-light rounded-3 border text-muted small">No active system feeds initialized.</div>
+                }
+                else
+                {
+                    @foreach (var alert in notificationList)
+                    {
+                        <div class="alert @(currentStyle == "Detailed" ? "alert-detailed border-primary bg-light-primary p-3 mb-3" : "alert-compact border-0 bg-light p-2 mb-2") rounded-3 shadow-xs border-start border-4 animate-slide-up">
+                            <div class="d-flex align-items-start">
+                                <i class="bi @(currentStyle == "Detailed" ? "bi-info-square-fill text-primary mt-1" : "bi-dot text-secondary fs-4") me-2"></i>
+                                <span class="fw-medium text-dark @(currentStyle == "Compact" ? "small" : "")">@alert</span>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<string>? notificationList;
+    private string currentStyle = "Compact";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Config.OnConfigChanged += RefreshFeed;
+        await LoadFeedAsync();
+    }
+
+    private async Task LoadFeedAsync()
+    {
+        currentStyle = NotifService.GetCurrentStyle();
+        notificationList = await NotifService.GetNotificationsAsync();
+    }
+
+    private async void RefreshFeed()
+    {
+        await InvokeAsync(async () =>
+        {
+            await LoadFeedAsync();
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose()
+    {
+        Config.OnConfigChanged -= RefreshFeed;
+    }
+}
+
+<style>
+    .bg-light-primary {
+        background-color: #f0f7ff;
+    }
+
+    .alert-detailed {
+        border-left-color: #0d6efd !important;
+    }
+
+    .alert-compact {
+        border-left-color: #6c757d !important;
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.3s ease-out forwards;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

@@ -1,0 +1,79 @@
+﻿@page "/notif-settings"
+@rendermode InteractiveServer
+@inject App06.Models.NotificationConfig Config
+
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light-orange-gradient py-5">
+    <div class="card shadow-lg border-0 overflow-hidden" style="width: 100%; max-width: 450px; border-radius: 20px;">
+
+        <div class="bg-gradient-warning text-white text-center py-4 px-3">
+            <div class="icon-wrapper mb-2">
+                <i class="bi bi-sliders2 fs-2"></i>
+            </div>
+            <h4 class="m-0 fw-bold tracking-wide">Control Dashboard</h4>
+            <p class="text-white-50 small m-0 mt-1">Configure dependency injection defaults</p>
+        </div>
+
+        <div class="card-body p-4 bg-white">
+            <div class="mb-3">
+                <label class="form-label fw-bold text-secondary small text-uppercase">Default Count</label>
+                <div class="input-group shadow-sm rounded-3 overflow-hidden">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-hash"></i></span>
+                    <input type="text" class="form-control border-start-0 bg-light ps-2" @bind="InputCount" />
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-bold text-secondary small text-uppercase">Display Layout View Style</label>
+                <div class="input-group shadow-sm rounded-3 overflow-hidden">
+                    <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-palette"></i></span>
+                    <select class="form-select border-start-0 bg-light ps-2" @bind="Config.NotificationStyle">
+                        <option value="Compact">Compact View Mode</option>
+                        <option value="Detailed">Detailed Information Mode</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn btn-warning w-100 fw-bold py-2 text-white shadow-sm" @onclick="SaveChanges" style="border-radius: 10px;">
+                <i class="bi bi-save2-fill me-2"></i>Apply Configuration
+            </button>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string InputCount { get; set; } = "";
+
+    protected override void OnInitialized()
+    {
+        InputCount = Config.DefaultNumberOfNotifications.ToString();
+    }
+
+    private void SaveChanges()
+    {
+        if (!string.IsNullOrEmpty(InputCount))
+        {
+            Config.DefaultNumberOfNotifications = int.Parse(InputCount);
+            Config.NotifyChanged(); // Broadcast changes globally
+        }
+    }
+}
+
+<style>
+    .bg-light-orange-gradient {
+        background: linear-gradient(135deg, #fbf7f4 0%, #f5ece6 100%);
+    }
+
+    .bg-gradient-warning {
+        background: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
+    }
+
+    .icon-wrapper {
+        display: inline-flex;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.2);
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+</style>

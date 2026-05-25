@@ -3,6 +3,9 @@ using App06.Components;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// Add these lines inside Program.cs where other services are registered
+builder.Services.AddSingleton<App06.Models.NotificationConfig>();
+builder.Services.AddScoped<App06.Services.NotificationService>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
