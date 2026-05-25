@@ -1,0 +1,14 @@
+﻿@rendermode InteractiveServer
+@inject App07.Services.ThemeStateService ThemeService
+
+<div class="top-row px-4 d-flex align-items-center justify-content-between shadow-sm w-100">
+    <span class="fw-bold small text-uppercase tracking-wider">
+        Active Theme: <span class="badge @(ThemeService.IsDarkMode ? "bg-light text-dark" : "bg-dark text-white")">@(ThemeService.IsDarkMode ? "Dark" : "Light")</span>
+    </span>
+
+    <button class="btn @(ThemeService.IsDarkMode ? "btn-outline-light" : "btn-outline-dark") btn-sm fw-bold px-3 py-2"
+            @onclick="ThemeService.ToggleTheme" style="border-radius: 8px;">
+        <i class="bi @(ThemeService.IsDarkMode ? "bi-sun-fill text-warning" : "bi-moon-stars-fill text-primary") me-2"></i>
+        @(ThemeService.IsDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode")
+    </button>
+</div>

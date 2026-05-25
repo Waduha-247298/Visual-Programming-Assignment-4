@@ -3,6 +3,7 @@ using App07.Components;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<App07.Services.ThemeStateService>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 

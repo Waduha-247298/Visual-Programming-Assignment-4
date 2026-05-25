@@ -32,7 +32,8 @@ namespace App06.Services
 
             for (int i = 1; i <= count; i++)
             {
-                list.Add("System Alert Alert-0" + i + ": Internal data pipeline synchronized successfully." + styleSuffix);
+                list.Add("System Alert Alert-0" + i + ": Internal data pipeline synchronized successfully." + 
+                    styleSuffix);
             }
 
             return list;
