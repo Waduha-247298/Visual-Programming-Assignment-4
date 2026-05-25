@@ -53,14 +53,10 @@ justify-content-center bg-light-blue-gradient py-5">
 
 @code {
     private int clickCount = 0;
-
-    // Event handler to increment the variable counter safely
     private void IncrementCount()
     {
         clickCount = clickCount + 1;
     }
-
-    // Two-way binding bridge tracking text updates and converting cleanly with int.Parse
     private string ManualCountValue
     {
         get => clickCount.ToString();
@@ -73,7 +69,6 @@ justify-content-center bg-light-blue-gradient py-5">
         }
     }
 }
-
 <style>
     .bg-light-blue-gradient {
         background: linear-gradient(135deg, #f1f4f9 0%, #d5dde9 100%);
