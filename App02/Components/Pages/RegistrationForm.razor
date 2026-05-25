@@ -1,0 +1,165 @@
+﻿@page "/register"
+@rendermode InteractiveServer
+@using App02.Models
+
+<div class="container-fluid min-vh-100 d-flex align-items-center 
+justify-content-center bg-light-gray-gradient py-5">
+    <div class="card shadow-lg border-0 overflow-hidden" 
+    style="width: 100%; max-width: 520px; border-radius: 20px;">
+
+        <div class="bg-gradient-dark text-white text-center py-4 px-3">
+            <div class="icon-wrapper mb-2">
+                <i class="bi bi-shield-lock fs-2"></i>
+            </div>
+            <h4 class="m-0 fw-bold tracking-wide">Secure Registration Portal</h4>
+            <p class="text-white-50 small m-0 mt-1">Please fill in your valid operational profile details</p>
+        </div>
+
+        <div class="card-body p-4 p-md-5 bg-white">
+
+            <EditForm Model="@user" OnValidSubmit="HandleValidSubmit" FormName="RegistrationForm">
+                <DataAnnotationsValidator />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-secondary small 
+                    text-uppercase">First Name</label>
+                    <div class="input-group shadow-sm rounded-3 overflow-hidden">
+                        <span class="input-group-text bg-light border-end-0 text-muted">
+                            <i class="bi bi-person"></i></span>
+                        <InputText class="form-control border-start-0 bg-light ps-2" 
+                        @bind-Value="user.FirstName" placeholder="Enter first name..." />
+                    </div>
+                    <ValidationMessage For="@(() => user.FirstName)"
+                        class="text-danger small fw-medium mt-1 d-block" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-secondary small text-uppercase">Last Name</label>
+                    <div class="input-group shadow-sm rounded-3 overflow-hidden">
+                        <span class="input-group-text bg-light border-end-0 text-muted px-3">
+                            <i class="bi bi-person-vcard"></i>
+                        </span>
+                        <InputText class="form-control border-start-0 bg-light ps-2"
+                        @bind-Value="user.LastName" placeholder="Enter last name..." />
+                    </div>
+                    <ValidationMessage For="@(() => user.LastName)" 
+                        class="text-danger small fw-medium mt-1 d-block" />
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-secondary small 
+                      text-uppercase">Email Address</label>
+                    <div class="input-group shadow-sm rounded-3 overflow-hidden">
+                        <span class="input-group-text bg-light border-end-0 text-muted">
+                            <i class="bi bi-envelope"></i></span>
+                        <InputText class="form-control border-start-0 bg-light ps-2" 
+                        @bind-Value="user.Email" placeholder="username@example.com" />
+                    </div>
+                    <ValidationMessage For="@(() => user.Email)" class="text-danger small fw-medium mt-1 d-block" />
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm py-2"
+                style="border-radius: 10px;">
+                    <i class="bi bi-check-circle-fill me-2"></i>Submit Profile
+                </button>
+            </EditForm>
+
+            @if (isSubmittedSuccessfully)
+            {
+                <div class="alert alert-custom-success d-flex align-items-center p-3 
+                     rounded-3 shadow-xs mt-4 animate-slide-up" role="alert">
+                    <div class="alert-icon-circle bg-success text-white me-3 d-flex 
+                      align-items-center justify-content-center rounded-circle">
+                        <i class="bi bi-patch-check"></i>
+                    </div>
+                    <div>
+                        <small class="text-muted d-block text-uppercase fw-bold tracking-widest-xs">
+                            Form Submission Success</small>
+                        <span class="fw-bold text-dark">@successMessage</span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="card-footer bg-light text-center py-3 border-0">
+            <span class="text-muted small fw-medium">CS-284L • Visual Programming Lab</span>
+        </div>
+    </div>
+</div>
+
+@code {
+    private UserModel user = new UserModel();
+    private bool isSubmittedSuccessfully = false;
+    private string successMessage = "";
+
+    private void HandleValidSubmit()
+    {
+        isSubmittedSuccessfully = true;
+        // String concatenation using explicit '+' operator as requested
+        successMessage = "Welcome, " + user.FirstName + " " + user.LastName + 
+        "! Your data has been verified and submitted.";
+    }
+}
+
+<style>
+    .bg-light-gray-gradient {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f3 100%);
+    }
+
+    .bg-gradient-dark {
+        background: linear-gradient(135deg, #2c3e50 0%, #0f2027 100%);
+    }
+
+    .icon-wrapper {
+        display: inline-flex;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.1);
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .input-group .form-control:focus {
+        background-color: #ffffff !important;
+        box-shadow: none;
+        border-color: #2c3e50;
+    }
+
+    .alert-custom-success {
+        background-color: #f0fdf4;
+        border-left: 5px solid #16a34a;
+    }
+
+    .alert-icon-circle {
+        width: 35px;
+        height: 35px;
+        min-width: 35px;
+        font-size: 1.1rem;
+    }
+
+    .tracking-wide {
+        letter-spacing: 0.05rem;
+    }
+
+    .tracking-widest-xs {
+        letter-spacing: 0.06rem;
+        font-size: 0.65rem;
+    }
+
+    .animate-slide-up {
+        animation: formSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @@keyframes formSlideUp {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
