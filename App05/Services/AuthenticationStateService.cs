@@ -21,7 +21,6 @@ namespace App05.Services
             CurrentUser = string.Empty;
             NotifyStateChanged();
         }
-
         private void NotifyStateChanged() => OnStateChange?.Invoke();
     }
 }
