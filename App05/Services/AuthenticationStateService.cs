@@ -14,7 +14,6 @@ namespace App05.Services
             CurrentUser = username;
             NotifyStateChanged();
         }
-
         public void LogOut()
         {
             IsAuthenticated = false;
