@@ -1,0 +1,138 @@
+﻿@page "/todo-db"
+@rendermode InteractiveServer
+@inject App08.Services.DatabaseTodoService DbService
+
+<div class="container-fluid min-vh-100 d-flex align-items-center 
+justify-content-center bg-light-db-gradient py-5">
+    <div class="card shadow-lg border-0 overflow-hidden"
+    style="width: 100%; max-width: 550px; border-radius: 20px;">
+
+        <div class="bg-gradient-db text-white text-center py-4 px-3">
+            <div class="icon-wrapper mb-2">
+                <i class="bi bi-database-fill-check fs-2"></i>
+            </div>
+            <h4 class="m-0 fw-bold tracking-wide">SQL Engine Task Sync</h4>
+            <p class="text-white-50 small m-0 mt-1">ADO.NET Persistent Relational Database Pipeline</p>
+        </div>
+
+        <div class="card-body p-4 p-md-5 bg-white">
+
+            <div class="mb-4">
+                <label class="form-label fw-bold text-secondary
+                    small text-uppercase">Database Payload Input</label>
+                <div class="input-group shadow-sm rounded-3 overflow-hidden">
+                    <span class="input-group-text bg-light border-end-0 text-muted px-3">
+                        <i class="bi bi-hdd-network-fill text-primary"></i>
+                    </span>
+                    <input type="text" class="form-control border-start-0 bg-light ps-2"
+                           @bind="newTaskDescription" placeholder="Commit new task description..." />
+                    <button class="btn btn-primary px-4 fw-bold" 
+                    @onclick="SaveTaskToDatabase">Commit Row</button>
+                </div>
+            </div>
+
+            <div class="task-container">
+                <label class="form-label fw-bold text-secondary small 
+                text-uppercase mb-2">Active Database Rows</label>
+
+                <ul class="list-group list-group-flush border rounded-3 overflow-hidden shadow-sm mb-4">
+                    @if (dbTasks == null || dbTasks.Count == 0)
+                    {
+                        <li class="list-group-item text-center text-muted py-4 bg-light">
+                            <i class="bi bi-server text-secondary d-block fs-3 mb-2"></i>
+                            <span class="small">No relational records found in database tables.</span>
+                        </li>
+                    }
+                    else
+                    {
+                        @foreach (var record in dbTasks)
+                        {
+                            <li class="list-group-item d-flex align-items-center
+                              justify-content-between py-3">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-secondary me-3 small font-monospace">ID:
+                                        @record.Key</span>
+                                    <span class="fw-medium text-dark">@record.Value</span>
+                                </div>
+                                <button class="btn btn-link text-danger p-0 border-0"
+                                @onclick="() => DeleteRow(record.Key)">
+                                    <i class="bi bi-x-circle-fill fs-5"></i>
+                                </button>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+
+            @if (dbTasks != null && dbTasks.Count > 0)
+            {
+                <button class="btn btn-danger w-100 fw-bold py-2 shadow-sm"
+                @onclick="TruncateTable" style="border-radius: 10px;">
+                    <i class="bi bi-exclamation-octagon-fill me-2"></i>Truncate Table (Clear All Rows)
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<KeyValuePair<int, string>> dbTasks = new List<KeyValuePair<int, string>>();
+    private string newTaskDescription = "";
+    protected override void OnInitialized()
+    {
+        RefreshTaskCollection();
+    }
+
+    private void RefreshTaskCollection()
+    {
+        dbTasks = DbService.GetAllTasks();
+    }
+
+    private void SaveTaskToDatabase()
+    {
+        if (!string.IsNullOrWhiteSpace(newTaskDescription))
+        {
+            DbService.AddTask(newTaskDescription);
+            newTaskDescription = ""; 
+            RefreshTaskCollection();
+        }
+    }
+
+    private void DeleteRow(int id)
+    {
+        DbService.DeleteTask(id);
+        RefreshTaskCollection();
+    }
+
+    private void TruncateTable()
+    {
+        DbService.ClearAllTasks();
+        RefreshTaskCollection();
+    }
+}
+
+<style>
+    .bg-light-db-gradient {
+        background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+    }
+
+    .bg-gradient-db {
+        background: linear-gradient(135deg, #102a43 0%, #243b53 100%);
+    }
+
+    .icon-wrapper {
+        display: inline-flex;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.1);
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .input-group .form-control:focus {
+        background-color: #ffffff !important;
+        box-shadow: none;
+        border-color: #102a43;
+    }
+</style>

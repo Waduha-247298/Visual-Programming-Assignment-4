@@ -3,6 +3,7 @@ using App08.Components;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<App08.Services.DatabaseTodoService>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
